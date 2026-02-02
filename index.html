@@ -3,171 +3,213 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Valentine?</title>
+  <title>Be My Valentine?</title>
   <style>
-    :root {
-      --bg1: #ffdee9;
-      --bg2: #b5fffc;
-      --card: rgba(255, 255, 255, 0.75);
-      --shadow: 0 18px 60px rgba(0,0,0,0.15);
-      --radius: 24px;
+    :root{
+      --bgA: #fff1f6;
+      --bgB: #f2fffb;
+      --ink: #1f1f29;
+      --muted: rgba(31,31,41,.7);
+      --card: rgba(255,255,255,.78);
+      --stroke: rgba(255,255,255,.55);
+      --shadow: 0 18px 60px rgba(0,0,0,.14);
+      --pink: #ff3b7a;
+      --pink2:#ff7aa6;
+      --radius: 26px;
     }
 
-    body {
-      margin: 0;
-      height: 100vh;
-      overflow: hidden;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
-      background: radial-gradient(circle at 20% 20%, var(--bg2), transparent 45%),
-                  radial-gradient(circle at 80% 10%, var(--bg1), transparent 45%),
-                  linear-gradient(135deg, #fff, #ffe6f2);
-      display: grid;
-      place-items: center;
-      user-select: none;
-    }
-
-    .card {
-      width: min(520px, 92vw);
-      background: var(--card);
-      backdrop-filter: blur(10px);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(255,255,255,0.6);
-      padding: 34px 28px 26px;
-      text-align: center;
+    *{ box-sizing: border-box; }
+    body{
+      margin:0;
+      height:100vh;
+      overflow:hidden;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial;
+      color: var(--ink);
+      display:grid;
+      place-items:center;
+      background:
+        radial-gradient(900px 600px at 15% 15%, rgba(255, 122, 166,.35), transparent 55%),
+        radial-gradient(900px 600px at 85% 20%, rgba(138, 246, 223,.32), transparent 55%),
+        linear-gradient(135deg, var(--bgA), var(--bgB));
       position: relative;
     }
 
-    h1 {
-      margin: 0 0 10px;
-      font-size: 30px;
-      letter-spacing: -0.02em;
+    /* Floral SVG overlay (no external images needed) */
+    .flowers{
+      position:absolute;
+      inset:-120px;
+      opacity:.65;
+      pointer-events:none;
+      filter: blur(0.2px);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='760' height='760'%3E%3Cdefs%3E%3CradialGradient id='p' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%23ff7aa6' stop-opacity='0.95'/%3E%3Cstop offset='70%25' stop-color='%23ff3b7a' stop-opacity='0.55'/%3E%3Cstop offset='100%25' stop-color='%23ff3b7a' stop-opacity='0'/%3E%3C/radialGradient%3E%3CradialGradient id='g' cx='50%25' cy='50%25' r='50%25'%3E%3Cstop offset='0%25' stop-color='%238af6df' stop-opacity='0.9'/%3E%3Cstop offset='70%25' stop-color='%2326c7a6' stop-opacity='0.45'/%3E%3Cstop offset='100%25' stop-color='%2326c7a6' stop-opacity='0'/%3E%3C/radialGradient%3E%3C/defs%3E%3Cg opacity='0.9'%3E%3Cg transform='translate(90 120)'%3E%3Ccircle cx='0' cy='0' r='34' fill='url(%23p)'/%3E%3Ccircle cx='40' cy='10' r='26' fill='url(%23p)'/%3E%3Ccircle cx='18' cy='44' r='28' fill='url(%23p)'/%3E%3Ccircle cx='56' cy='52' r='22' fill='url(%23p)'/%3E%3Ccircle cx='28' cy='26' r='10' fill='%23ffd1e1'/%3E%3C/g%3E%3Cg transform='translate(640 160)'%3E%3Ccircle cx='0' cy='0' r='30' fill='url(%23g)'/%3E%3Ccircle cx='36' cy='8' r='22' fill='url(%23g)'/%3E%3Ccircle cx='14' cy='36' r='24' fill='url(%23g)'/%3E%3Ccircle cx='50' cy='44' r='19' fill='url(%23g)'/%3E%3Ccircle cx='24' cy='20' r='9' fill='%23dffdf6'/%3E%3C/g%3E%3Cg transform='translate(140 640)'%3E%3Ccircle cx='0' cy='0' r='28' fill='url(%23g)'/%3E%3Ccircle cx='34' cy='8' r='20' fill='url(%23g)'/%3E%3Ccircle cx='14' cy='34' r='22' fill='url(%23g)'/%3E%3Ccircle cx='48' cy='42' r='17' fill='url(%23g)'/%3E%3Ccircle cx='22' cy='18' r='8' fill='%23dffdf6'/%3E%3C/g%3E%3Cg transform='translate(620 620)'%3E%3Ccircle cx='0' cy='0' r='34' fill='url(%23p)'/%3E%3Ccircle cx='40' cy='10' r='26' fill='url(%23p)'/%3E%3Ccircle cx='18' cy='44' r='28' fill='url(%23p)'/%3E%3Ccircle cx='56' cy='52' r='22' fill='url(%23p)'/%3E%3Ccircle cx='28' cy='26' r='10' fill='%23ffd1e1'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      background-size: 760px 760px;
+      background-repeat: repeat;
+      transform: rotate(-6deg);
     }
 
-    p {
-      margin: 0 0 22px;
-      opacity: 0.8;
+    .card{
+      width:min(560px, 92vw);
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      backdrop-filter: blur(10px);
+      padding: 34px 26px 26px;
+      text-align:center;
+      position:relative;
     }
 
-    .btn-row {
-      display: flex;
-      gap: 14px;
-      justify-content: center;
-      align-items: center;
-      flex-wrap: wrap;
+    .badge{
+      display:inline-flex;
+      align-items:center;
+      gap:8px;
+      font-size: 13px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(255,255,255,.65);
+      border: 1px solid rgba(0,0,0,.06);
+      color: rgba(31,31,41,.8);
+      margin-bottom: 10px;
+    }
+
+    h1{
+      margin: 0 0 8px;
+      font-size: 34px;
+      letter-spacing: -0.03em;
+    }
+
+    p{
+      margin:0 0 18px;
+      color: var(--muted);
+      line-height: 1.35;
+    }
+
+    .btnRow{
+      display:flex;
+      gap:14px;
+      justify-content:center;
+      align-items:center;
+      flex-wrap:wrap;
       margin-top: 10px;
       min-height: 64px;
     }
 
-    button {
-      border: 0;
+    button{
+      border:0;
       border-radius: 999px;
       padding: 14px 22px;
       font-size: 16px;
-      cursor: pointer;
-      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
-      transition: transform 0.08s ease;
-      position: relative;
+      cursor:pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,.12);
+      transition: transform .08s ease, filter .12s ease;
+      font-weight: 650;
+      letter-spacing: 0.01em;
+    }
+    button:active{ transform: scale(.98); }
+    button:hover{ filter: brightness(1.02); }
+
+    #yesBtn{
+      background: linear-gradient(135deg, var(--pink), var(--pink2));
+      color:white;
     }
 
-    button:active {
-      transform: scale(0.98);
-    }
-
-    #yesBtn {
-      background: #ff4d88;
-      color: white;
-    }
-
-    /* "No" is absolutely positioned so we can move it freely */
-    #noBtn {
-      background: white;
-      color: #333;
+    #noBtn{
+      background: rgba(255,255,255,.9);
+      color:#333;
       border: 1px solid rgba(0,0,0,0.08);
-      position: absolute;
+      position:absolute;
       left: 50%;
       top: 50%;
-      transform: translate(60px, 80px);
-      touch-action: none;
+      transform: translate(70px, 90px);
+      touch-action:none;
+      font-weight: 600;
     }
 
-    .result {
+    .result{
       margin-top: 18px;
       font-size: 18px;
-      font-weight: 600;
-      display: none;
+      font-weight: 700;
+      display:none;
     }
 
-    .hearts {
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      overflow: hidden;
+    .sub{
+      margin-top: 8px;
+      font-size: 13px;
+      color: rgba(31,31,41,.65);
+      display:none;
+    }
+
+    .hearts{
+      position:absolute;
+      inset:0;
+      pointer-events:none;
+      overflow:hidden;
       border-radius: var(--radius);
     }
-
-    .heart {
-      position: absolute;
+    .heart{
+      position:absolute;
       font-size: 18px;
-      opacity: 0.8;
+      opacity: .85;
       animation: floatUp 1.8s ease-in forwards;
     }
-
-    @keyframes floatUp {
-      0%   { transform: translateY(0) scale(1); opacity: 0.8; }
-      100% { transform: translateY(-160px) scale(1.6); opacity: 0; }
+    @keyframes floatUp{
+      0% { transform: translateY(0) scale(1); opacity:.85; }
+      100%{ transform: translateY(-170px) scale(1.6); opacity:0; }
     }
   </style>
 </head>
 <body>
-  <div class="card" id="card">
-    <h1>Do you want to be my Valentine? 💘</h1>
-    <p>(Pick wisely 😄)</p>
+  <div class="flowers"></div>
 
-    <div class="btn-row">
+  <div class="card" id="card">
+    <div class="badge">🌸 Valentine proposal 🌸</div>
+    <h1>Do you want to be my Valentine? 💘</h1>
+    <p>One click and it’s official (and yes, there will be dessert).</p>
+
+    <div class="btnRow">
       <button id="yesBtn">Yes</button>
     </div>
 
     <button id="noBtn" aria-label="No">No</button>
 
     <div class="result" id="result"></div>
+    <div class="sub" id="sub"></div>
     <div class="hearts" id="hearts"></div>
   </div>
 
   <script>
-    const card = document.getElementById("card");
-    const noBtn = document.getElementById("noBtn");
+    // 1) Put your IFTTT Webhooks URL here:
+    // Example format:
+    // https://maker.ifttt.com/trigger/valentine_yes/with/key/YOUR_KEY
+    const IFTTT_WEBHOOK_URL = "PASTE_YOUR_IFTTT_WEBHOOK_URL_HERE";
+
+    const card   = document.getElementById("card");
+    const noBtn  = document.getElementById("noBtn");
     const yesBtn = document.getElementById("yesBtn");
     const result = document.getElementById("result");
+    const sub    = document.getElementById("sub");
     const hearts = document.getElementById("hearts");
 
-    // Place "No" somewhere that fits inside the card
     function moveNoButton() {
       const cardRect = card.getBoundingClientRect();
-      const btnRect = noBtn.getBoundingClientRect();
-
-      // padding so it doesn't clip outside
-      const padding = 16;
+      const btnRect  = noBtn.getBoundingClientRect();
+      const padding  = 16;
 
       const minX = padding;
       const maxX = cardRect.width - btnRect.width - padding;
-      const minY = 80; // keep away from title area
+      const minY = 110; // below heading
       const maxY = cardRect.height - btnRect.height - padding;
 
       const x = Math.random() * (maxX - minX) + minX;
       const y = Math.random() * (maxY - minY) + minY;
 
-      // Position relative to the card
       noBtn.style.left = x + "px";
       noBtn.style.top  = y + "px";
       noBtn.style.transform = "none";
     }
 
-    // Make "No" run away if cursor gets close (desktop)
     function onPointerMove(e) {
       const cardRect = card.getBoundingClientRect();
-
-      // pointer coords relative to card
       const px = e.clientX - cardRect.left;
       const py = e.clientY - cardRect.top;
 
@@ -175,59 +217,71 @@
       const bx = (btnRect.left - cardRect.left) + btnRect.width / 2;
       const by = (btnRect.top  - cardRect.top ) + btnRect.height / 2;
 
-      const dx = px - bx;
-      const dy = py - by;
-      const dist = Math.hypot(dx, dy);
-
-      // sensitivity radius
-      const triggerDist = 110;
-
-      if (dist < triggerDist) {
-        moveNoButton();
-      }
+      const dist = Math.hypot(px - bx, py - by);
+      if (dist < 120) moveNoButton();
     }
 
-    // On mobile, make it move on touch start too
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("click", (e) => { e.preventDefault(); moveNoButton(); });
+
     noBtn.addEventListener("touchstart", (e) => {
       e.preventDefault();
       moveNoButton();
     }, { passive: false });
 
-    noBtn.addEventListener("mouseenter", moveNoButton);
     document.addEventListener("mousemove", onPointerMove);
 
-    // If "No" somehow gets clicked, just move it again
-    noBtn.addEventListener("click", (e) => {
-      e.preventDefault();
-      moveNoButton();
-    });
-
-    // Yes flow
     function popHearts() {
       const cardRect = card.getBoundingClientRect();
-      for (let i = 0; i < 14; i++) {
-        const s = document.createElement("div");
-        s.className = "heart";
-        s.textContent = Math.random() > 0.5 ? "💖" : "💘";
-        s.style.left = (Math.random() * (cardRect.width - 30) + 10) + "px";
-        s.style.top = (Math.random() * (cardRect.height - 30) + 10) + "px";
-        s.style.animationDuration = (1.3 + Math.random() * 1.2) + "s";
-        hearts.appendChild(s);
-        setTimeout(() => s.remove(), 2200);
+      const glyphs = ["💖","💘","💞","🌸"];
+      for (let i = 0; i < 16; i++) {
+        const h = document.createElement("div");
+        h.className = "heart";
+        h.textContent = glyphs[Math.floor(Math.random()*glyphs.length)];
+        h.style.left = (Math.random() * (cardRect.width - 30) + 10) + "px";
+        h.style.top  = (Math.random() * (cardRect.height - 30) + 10) + "px";
+        h.style.animationDuration = (1.2 + Math.random() * 1.2) + "s";
+        hearts.appendChild(h);
+        setTimeout(() => h.remove(), 2400);
       }
     }
 
-    yesBtn.addEventListener("click", () => {
-      result.style.display = "block";
-      result.textContent = "YAYYY!! 💞 Text me: when are we getting dessert?";
-      popHearts();
+    async function notifyYes() {
+      // Only try if user filled it in.
+      if (!IFTTT_WEBHOOK_URL || IFTTT_WEBHOOK_URL.includes("PASTE_YOUR")) return false;
 
-      // Optional: hide No after Yes
+      // Send minimal data; IFTTT accepts JSON if you want, but plain POST works too.
+      // Adding a timestamp helps you identify when it happened.
+      const payload = { value1: "Valentine YES ✅", value2: new Date().toISOString() };
+
+      try {
+        const res = await fetch(IFTTT_WEBHOOK_URL, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(payload),
+          // prevent caching weirdness
+          cache: "no-store"
+        });
+        return res.ok;
+      } catch {
+        return false;
+      }
+    }
+
+    yesBtn.addEventListener("click", async () => {
+      result.style.display = "block";
+      sub.style.display = "block";
+      result.textContent = "YAY!! 💞";
+      sub.textContent = "Notification sent (or attempting to send)…";
+      popHearts();
       noBtn.style.display = "none";
+
+      const ok = await notifyYes();
+      sub.textContent = ok
+        ? "✅ You’ll get notified that she clicked Yes."
+        : "⚠️ Couldn’t send notification (check your webhook URL).";
     });
 
-    // Initial position
-    // Wait a tick so layout is stable
     setTimeout(moveNoButton, 50);
   </script>
 </body>
