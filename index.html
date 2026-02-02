@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Valentine?</title>
+  <style>
+    :root {
+      --bg1: #ffdee9;
+      --bg2: #b5fffc;
+      --card: rgba(255, 255, 255, 0.75);
+      --shadow: 0 18px 60px rgba(0,0,0,0.15);
+      --radius: 24px;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      overflow: hidden;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif;
+      background: radial-gradient(circle at 20% 20%, var(--bg2), transparent 45%),
+                  radial-gradient(circle at 80% 10%, var(--bg1), transparent 45%),
+                  linear-gradient(135deg, #fff, #ffe6f2);
+      display: grid;
+      place-items: center;
+      user-select: none;
+    }
+
+    .card {
+      width: min(520px, 92vw);
+      background: var(--card);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(255,255,255,0.6);
+      padding: 34px 28px 26px;
+      text-align: center;
+      position: relative;
+    }
+
+    h1 {
+      margin: 0 0 10px;
+      font-size: 30px;
+      letter-spacing: -0.02em;
+    }
+
+    p {
+      margin: 0 0 22px;
+      opacity: 0.8;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 14px;
+      justify-content: center;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 10px;
+      min-height: 64px;
+    }
+
+    button {
+      border: 0;
+      border-radius: 999px;
+      padding: 14px 22px;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 10px 20px rgba(0,0,0,0.12);
+      transition: transform 0.08s ease;
+      position: relative;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    #yesBtn {
+      background: #ff4d88;
+      color: white;
+    }
+
+    /* "No" is absolutely positioned so we can move it freely */
+    #noBtn {
+      background: white;
+      color: #333;
+      border: 1px solid rgba(0,0,0,0.08);
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(60px, 80px);
+      touch-action: none;
+    }
+
+    .result {
+      margin-top: 18px;
+      font-size: 18px;
+      font-weight: 600;
+      display: none;
+    }
+
+    .hearts {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      overflow: hidden;
+      border-radius: var(--radius);
+    }
+
+    .heart {
+      position: absolute;
+      font-size: 18px;
+      opacity: 0.8;
+      animation: floatUp 1.8s ease-in forwards;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(0) scale(1); opacity: 0.8; }
+      100% { transform: translateY(-160px) scale(1.6); opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <div class="card" id="card">
+    <h1>Do you want to be my Valentine? 💘</h1>
+    <p>(Pick wisely 😄)</p>
+
+    <div class="btn-row">
+      <button id="yesBtn">Yes</button>
+    </div>
+
+    <button id="noBtn" aria-label="No">No</button>
+
+    <div class="result" id="result"></div>
+    <div class="hearts" id="hearts"></div>
+  </div>
+
+  <script>
+    const card = document.getElementById("card");
+    const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
+    const result = document.getElementById("result");
+    const hearts = document.getElementById("hearts");
+
+    // Place "No" somewhere that fits inside the card
+    function moveNoButton() {
+      const cardRect = card.getBoundingClientRect();
+      const btnRect = noBtn.getBoundingClientRect();
+
+      // padding so it doesn't clip outside
+      const padding = 16;
+
+      const minX = padding;
+      const maxX = cardRect.width - btnRect.width - padding;
+      const minY = 80; // keep away from title area
+      const maxY = cardRect.height - btnRect.height - padding;
+
+      const x = Math.random() * (maxX - minX) + minX;
+      const y = Math.random() * (maxY - minY) + minY;
+
+      // Position relative to the card
+      noBtn.style.left = x + "px";
+      noBtn.style.top  = y + "px";
+      noBtn.style.transform = "none";
+    }
+
+    // Make "No" run away if cursor gets close (desktop)
+    function onPointerMove(e) {
+      const cardRect = card.getBoundingClientRect();
+
+      // pointer coords relative to card
+      const px = e.clientX - cardRect.left;
+      const py = e.clientY - cardRect.top;
+
+      const btnRect = noBtn.getBoundingClientRect();
+      const bx = (btnRect.left - cardRect.left) + btnRect.width / 2;
+      const by = (btnRect.top  - cardRect.top ) + btnRect.height / 2;
+
+      const dx = px - bx;
+      const dy = py - by;
+      const dist = Math.hypot(dx, dy);
+
+      // sensitivity radius
+      const triggerDist = 110;
+
+      if (dist < triggerDist) {
+        moveNoButton();
+      }
+    }
+
+    // On mobile, make it move on touch start too
+    noBtn.addEventListener("touchstart", (e) => {
+      e.preventDefault();
+      moveNoButton();
+    }, { passive: false });
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    document.addEventListener("mousemove", onPointerMove);
+
+    // If "No" somehow gets clicked, just move it again
+    noBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      moveNoButton();
+    });
+
+    // Yes flow
+    function popHearts() {
+      const cardRect = card.getBoundingClientRect();
+      for (let i = 0; i < 14; i++) {
+        const s = document.createElement("div");
+        s.className = "heart";
+        s.textContent = Math.random() > 0.5 ? "💖" : "💘";
+        s.style.left = (Math.random() * (cardRect.width - 30) + 10) + "px";
+        s.style.top = (Math.random() * (cardRect.height - 30) + 10) + "px";
+        s.style.animationDuration = (1.3 + Math.random() * 1.2) + "s";
+        hearts.appendChild(s);
+        setTimeout(() => s.remove(), 2200);
+      }
+    }
+
+    yesBtn.addEventListener("click", () => {
+      result.style.display = "block";
+      result.textContent = "YAYYY!! 💞 Text me: when are we getting dessert?";
+      popHearts();
+
+      // Optional: hide No after Yes
+      noBtn.style.display = "none";
+    });
+
+    // Initial position
+    // Wait a tick so layout is stable
+    setTimeout(moveNoButton, 50);
+  </script>
+</body>
+</html>
